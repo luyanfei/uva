@@ -1,0 +1,64 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "uva-luyanfei"
+dynamic = ["version"]
+description = ''
+readme = "README.md"
+requires-python = ">=3.8"
+license = "MIT"
+keywords = []
+authors = [
+  { name = "luyanfei", email = "luyanfei78@163.com" },
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = ["click"]
+
+[project.urls]
+Documentation = "https://github.com/luyanfei/uva#readme"
+Issues = "https://github.com/luyanfei/uva/issues"
+Source = "https://github.com/luyanfei/uva"
+
+[tool.hatch.version]
+path = "src/uva_luyanfei/__about__.py"
+
+[tool.hatch.envs.types]
+extra-dependencies = [
+  "mypy>=1.0.0",
+]
+[tool.hatch.envs.types.scripts]
+check = "mypy --install-types --non-interactive {args:src/uva_luyanfei tests}"
+
+[tool.coverage.run]
+source_pkgs = ["uva_luyanfei", "tests"]
+branch = true
+parallel = true
+omit = [
+  "src/uva_luyanfei/__about__.py",
+]
+
+[tool.coverage.paths]
+uva_luyanfei = ["src/uva_luyanfei", "*/uva-luyanfei/src/uva_luyanfei"]
+tests = ["tests", "*/uva-luyanfei/tests"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]
+
+[project.scripts]
+uva = "uva_luyanfei.cli:main"
