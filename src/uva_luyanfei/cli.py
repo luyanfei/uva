@@ -34,14 +34,12 @@ def help(ctx):
     click.echo(ctx.parent.get_help())
 
 @main.command()
-@click.option('--username', '-u', type=str, help='Username')
-@click.option('--password', '-p', type=str, help='Password')
-def login(username, password):
-    # check username and password
-    if not username or not password:
-        click.echo('Username and password are required')
-        return
-
+def login():
+    """
+    Login with the given username and password
+    """
+    username = click.prompt('Username: ', type=str)
+    password = click.prompt('Password: ', type=str, hide_input=True)
     loginurl = "https://onlinejudge.org/index.php?option=com_comprofiler&task=login";
     response1 = subprocess.run(
         ['curl', '-s', loginurl],
