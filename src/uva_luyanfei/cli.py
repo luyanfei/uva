@@ -61,11 +61,16 @@ def login():
     encoded_data = urllib.parse.urlencode(form_data).encode('utf-8')
     # use curl to login, because requests doesn't work
     result = subprocess.run(
-        ['curl', '-s', '-c', cookie_file, '-d', encoded_data, '-X', 'POST', loginurl],
+        ['curl', '-s', '-v', '-c', cookie_file, '-d', encoded_data, '-X', 'POST', loginurl],
         capture_output=True,
         text=True
     )
-    # print(result.stdout)
+    # if result.stdout contains "HTTP/1.1 301 Moved Permanently" and "Location: https://onlinejudge.org/", then login is success
+    if 'HTTP/1.1 301 Moved Permanently' in result.stdout and 'Location: https://onlinejudge.org/' in result.stdout:
+        click.echo('Login success')
+    else:
+        click.echo('Login failed')
+
     
 @main.command()
 def logout():
@@ -181,13 +186,25 @@ def status():
         return
     # find all rows in the table
     rows = table.find_all('tr')
+    # find all columns max width
+    col_widths = []
     for row in rows:
         cols = row.find_all('td')
         if not cols:
             continue
-        # print all columns
-        for col in cols:
-            click.echo(col.text.strip(), nl=False)
+        # initialize col_widths with length of the first row
+        if not col_widths:
+            col_widths = [len(col.text.strip()) for col in cols]
+        for i, col in enumerate(cols):
+            if len(col.text.strip()) > col_widths[i]:
+                col_widths[i] = len(col.text.strip())
+    # print all columns with the max width plus 2 spaces
+    for row in rows:
+        cols = row.find_all('td')
+        if not cols:
+            continue
+        for i, col in enumerate(cols):
+            click.echo(col.text.strip().ljust(col_widths[i] + 2), nl=False)
             click.echo('\t', nl=False)
         click.echo()
 
