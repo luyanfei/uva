@@ -34,9 +34,6 @@ Source = "https://github.com/luyanfei/uva"
 [tool.hatch.version]
 path = "src/uva_luyanfei/__about__.py"
 
-[tool.hatch.build]
-include = ["src/uva_luyanfei/data/*.cvs"]
-
 [tool.hatch.envs.types]
 extra-dependencies = [
   "mypy>=1.0.0",
