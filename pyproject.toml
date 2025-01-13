@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "uva-luyanfei"
 dynamic = ["version"]
-description = ''
+description = 'A cli tool to use uva(https://onlinejudge.org).'
 readme = "README.md"
 requires-python = ">=3.8"
 license = "MIT"
